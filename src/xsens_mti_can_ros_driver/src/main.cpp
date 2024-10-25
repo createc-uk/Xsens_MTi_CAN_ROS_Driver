@@ -8,18 +8,20 @@ int main(int argc, char **argv)
 
     // Create the CAN interface and initialize it
     XsCanInterface *canInterface = new XsCanInterface();
-    canInterface->initialize();
-    canInterface->registerPublishers(node);
 
-
-    // Start processing messages
-    while (ros::ok())
+    if(canInterface->initialize())
     {
-        canInterface->spinFor();
-        ros::spinOnce();
-    }
+        canInterface->registerPublishers(node);
 
-    canInterface->closeInterface();
+        // Start processing messages
+        while (ros::ok())
+        {
+            canInterface->spinFor();
+            ros::spinOnce();
+        }
+
+        canInterface->closeInterface();
+    }
 
     return 0;
 }

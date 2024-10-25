@@ -1,18 +1,18 @@
+# SocketCAN inteface (default: can0)
+can_interface: "can0"
 
-#By default, the start frame id for each packet is 0x05, unless you change it, 
-#It must be the smallest number in your configuration in the MT Manager - Output Configurations - CAN mode output options
-start_frame_id: 5 #XSENS_SAMPLE_TIME_FRAME_ID
-
-publisher_queue_size: 5
-
-
-##timestamp option: 1)mti_utc: UTCTime from MTI; 2) mti_sampletime: UTCTime based on the SampleTimeFine from MTI; 3) other: UTCTime from host device
-## make sure you have selected "UTC Time" or "Sample Time Fine" at MT Manager - Device Settings - Output Configurations.
-## if there is no GNSS reception, the MTi will not output 0x07(UTCTime) over CAN.
-time_option: "mti_utc"
+# Timestamp option: 
+# 1)mti_utc: UTCTime from MTI; 2) mti_sampletime: UTCTime based on the SampleTimeFine from MTI; 3) other: UTCTime from host device
+# make sure you have selected "UTC Time" or "Sample Time Fine" at MT Manager - Device Settings - Output Configurations.
+# if there is no GNSS reception, the MTi will not output 0x07(UTCTime) over CAN.
+#time_option: "mti_utc"
+time_option: "other"
 
 # TF transform frame_id (default: imu_link), you may want to change it if you use multiple devices
-#frame_id: "imu_link"
+frame_id: "imu_link"
+
+# Publisher queue buffer size:
+publisher_queue_size: 5
 
 # Message publishers
 pub_imu: true
@@ -36,8 +36,6 @@ pub_nmea: true
 pub_gnsspose: true
 pub_utctime: true
 
-
-
 ## Sensor standard deviation [x,y,z] (optional)
 ## This value is used to override the covariance matrix in sensor_msgs/Imu and
 ## sensor_msgs/MagneticField messages.
@@ -45,3 +43,33 @@ pub_utctime: true
 #angular_velocity_stddev: [0.0, 0.0, 0.0] # [rad/s]
 #orientation_stddev: [0.0, 0.0, 0.0] # [rad]
 #magnetic_field_stddev: [0.0, 0.0, 0.0] # [Tesla]
+
+# CAN Frame id values as Integer values (note they are defined as hex in xsens windows app) 
+# Note only define frames that the sensor is configured to send! The minimum frame id is assumed to be the first frame for each packet)
+# Note some published ROS messages can rely on multiple CAN frames ensure those needed to publish the required messages are defined
+sample_time_frame_id: 5
+group_counter_frame_id: 6
+utc_frame_id: 7 
+status_word_frame_id: 17
+error_frame_id: 1
+warning_frame_id: 2
+quaternion_frame_id: 33
+euler_angles_frame_id: 34
+delta_q_frame_id: 51    
+rate_of_turn_frame_id: 50
+delta_v_frame_id: 49
+acceleration_frame_id: 52
+free_acceleration_frame_id: 53
+magnetic_field_frame_id: 65
+temperature_frame_id: 81   
+barometric_pressure_frame_id: 82
+acceleration_hr_frame_id: 98
+rate_of_turn_hr_frame_id: 97
+lat_lon_frame_id: 113
+altitude_ellipsoid_frame_id: 114
+velocity_frame_id: 118
+position_ecef_x_frame_id: 115
+position_ecef_y_frame_id: 116
+position_ecef_z_frame_id: 117
+gnss_receiver_status_frame_id: 121
+gnss_receiver_dop_frame_id: 122
